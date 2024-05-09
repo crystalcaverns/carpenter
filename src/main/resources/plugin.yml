@@ -1,0 +1,9 @@
+name: Carpenter
+version: '${version}'
+main: cc.carpenter.Carpenter
+api-version: '1.20'
+authors: [japicraft]
+website: https://crystalcaverns.net
+commands:
+  renovate:
+    description: Retrieves the latest versions of all plugins in the config.
