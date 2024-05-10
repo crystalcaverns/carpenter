@@ -49,6 +49,7 @@ public class Renovate implements CommandExecutor {
                     // download the file
                     download(origin, name, logger);
                 }
+                logger.log(Level.INFO, "All plugins have been renovated successfully!");
                 return true;
             }
             case "reload": {
