@@ -10,7 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Downloader {
-    public static void download(URL origin, String name, Logger logger) {
+    public static void download(URL origin, String name) {
+        // get logger
+        Logger logger = Carpenter.getPlugin(Carpenter.class).getLogger();
         // prepare streams
         BufferedInputStream in = null;
         FileOutputStream out = null;
@@ -18,35 +20,24 @@ public class Downloader {
         File destination = new File("/home/container/plugins/.renovated/" + name + ".jar");
         // start downloading
         try {
-            // announce the download
-            logger.log(Level.INFO,"Currently renovating \"" + name + "\"...");
             // open the connection
             HttpURLConnection connection = (HttpURLConnection) origin.openConnection();
             // set the user agent
             connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            // get the file length
-            int total = connection.getContentLength();
             // initialize streams
             in = new BufferedInputStream(connection.getInputStream());
             out = new FileOutputStream(destination);
             // prepare variables
             byte[] bytes = new byte[1024];
-            long current = 0L;
             int counter;
-            int last = 0;
             // download the file
             while((counter = in.read(bytes,0,1024)) != -1) {
-                current += counter;
-                out.write(bytes, 0, counter);
-                int percent = (int) (current * 100L / (long) total);
-                if (percent != last && percent % 10 == 0) {
-                    // if the percentage has changed, show the progress
-                    logger.log(Level.INFO,"Renovating \"" + name + "\": " + percent + "% (" + current + " of " + total + " bytes)");
-                    last = percent;
-                }
+                out.write(bytes,0,counter);
             }
+            // close the connection
+            connection.disconnect();
             // we're done!
-            logger.log(Level.INFO,"Finished renovating \"" + name + "\"!");
+            logger.log(Level.INFO,"Renovated \"" + name + "\"!");
         } catch (Exception e) {
             logger.log(Level.SEVERE,"Cannot renovate \"" + name + "\" - could not download.",e);
         } finally {
@@ -67,5 +58,6 @@ public class Downloader {
                 logger.log(Level.SEVERE,"Cannot close OUT stream.",e);
             }
         }
+        // we're done here
     }
 }
