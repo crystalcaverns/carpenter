@@ -1,6 +1,6 @@
 # Carpenter
 
-Updater protocol for the Crystal Caverns Minecraft server, designed to autonomously update important parts of the server.
+Server updater for the Crystal Caverns Minecraft server, designed to autonomously update the servers in our network.
 
 While this is a standalone plugin, it should not be used by anyone other than us, as it is specifically made just for Crystal Caverns.
 
